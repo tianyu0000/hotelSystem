@@ -24,6 +24,7 @@ const AddRoomButton: React.FC<childProps> = (props) => {
 
   const onClose = () => {
     setVisible(false);
+    form.resetFields();
   };
   const validateMessages = [{ required: true, message: "${label}未填写!" }];
   const handleRes = (data: string) => {
@@ -56,6 +57,7 @@ const AddRoomButton: React.FC<childProps> = (props) => {
       r_tag: form.getFieldValue("area"),
       r_type: form.getFieldValue("type")
     }).then(() => {
+      onClose();
       props.handleRefresh();
     })
   }
@@ -83,8 +85,8 @@ const AddRoomButton: React.FC<childProps> = (props) => {
       label: '特惠房源',
     },
     {
-      value: '品质民宿',
-      label: '品质民宿',
+      value: '品质房源',
+      label: '品质房源',
     },
   ]
 
@@ -99,6 +101,7 @@ const AddRoomButton: React.FC<childProps> = (props) => {
       onClose={onClose}
       visible={visible}
       bodyStyle={{ paddingBottom: 80 }}
+      destroyOnClose={true}
     >
       <Form
         labelCol={{ span: 4 }}
@@ -106,7 +109,7 @@ const AddRoomButton: React.FC<childProps> = (props) => {
         layout="horizontal"
         form={form}
       >
-        <Form.Item label="房间标题" name="title" rules={validateMessages}>
+        <Form.Item label="房间名" name="title" rules={validateMessages}>
           <Input />
         </Form.Item>
         <Form.Item label="房间描述" name="describe">
@@ -126,7 +129,7 @@ const AddRoomButton: React.FC<childProps> = (props) => {
         <Form.Item label="房间单价" name="price" rules={validateMessages}>
           <InputNumber />
         </Form.Item>
-        <Form.Item label="房间人数" name="people" rules={validateMessages}>
+        <Form.Item label="宜住人数" name="people" rules={validateMessages}>
           <InputNumber />
         </Form.Item>
         <Form.Item label="房间卧室" name="bedroom" rules={validateMessages}>

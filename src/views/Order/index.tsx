@@ -29,6 +29,18 @@ const Order: React.FC = () => {
 
     })
   }
+  const switchState = (state: number) => {
+    switch (state) {
+      case 1:
+        return '待付款';
+      case 2:
+        return '待核销';
+      case 3:
+        return '订单已取消';
+      case 4:
+        return '订单已完成';
+    }
+  }
   useEffect(() => {
     //订单列表
     getData(data);
@@ -68,12 +80,13 @@ const Order: React.FC = () => {
       title: '订单状态',
       dataIndex: 'o_state',
       key: 'o_state',
+      render: (state: number) => (<>{switchState(state)}</>)
     },
     {
       title: '操作',
       key: 'action',
       render: (record: orderInfo) => (
-        <Button type='primary' size='small' onClick={() => handleCheck(record)} disabled={disabled}>核销</Button >
+        <Button type='primary' size='small' onClick={() => handleCheck(record)} disabled={record.o_state === 2 ? false : true}>核销</Button >
       ),
     },
   ];

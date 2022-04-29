@@ -23,7 +23,8 @@ const UploadRoomImage: React.FC<childProps> = (props) => {
 
   const checkFile = (file: File): boolean => {
     if (fileTypeCases.filter((v) => file.type === v).length === 0) {
-      message.error('请传入正确的格式文件').then(() => false);
+      message.error('请传入正确的格式文件');
+      return false;
     }
     return true;
   };
@@ -35,7 +36,7 @@ const UploadRoomImage: React.FC<childProps> = (props) => {
       if (res) {
         urlRef.current = res.url;
         setImgUrl(urlRef.current);
-        props.handleRes(res.url);
+        props.handleRes(urlRef.current);
       }
     });
   }

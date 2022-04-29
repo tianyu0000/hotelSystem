@@ -81,6 +81,11 @@ const Room: React.FC = () => {
       key: 'r_price',
     },
     {
+      title: '房间类型',
+      dataIndex: 'r_type',
+      key: 'r_type',
+    },
+    {
       title: '地区',
       dataIndex: 'r_tag',
       key: 'r_tag',
