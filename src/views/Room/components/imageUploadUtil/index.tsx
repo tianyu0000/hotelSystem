@@ -20,6 +20,17 @@ const UploadRoomImage: React.FC<childProps> = (props) => {
       <div style={{ marginTop: 8 }}>Upload</div>
     </div>
   );
+  const prop = {
+    progress: {
+      strokeColor: {
+        '0%': '#108ee9',
+        '100%': '#87d068',
+      },
+      strokeWidth: 3,
+      format: (percent: number) => `${parseFloat(percent.toFixed(2))}%`,
+    },
+
+  }
 
   const checkFile = (file: File): boolean => {
     if (fileTypeCases.filter((v) => file.type === v).length === 0) {
@@ -41,15 +52,14 @@ const UploadRoomImage: React.FC<childProps> = (props) => {
     });
   }
   return (
-    <ImgCrop beforeCrop={checkFile}>
-      <Upload
-        listType="picture-card"
-        showUploadList={false}
-        customRequest={uploadImage}
-      >
-        {imgUrl ? <img src={imgUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
-      </Upload>
-    </ImgCrop>
+    <Upload
+      beforeUpload={checkFile}
+      listType="picture-card"
+      showUploadList={false}
+      customRequest={uploadImage}
+    >
+      {imgUrl ? <img src={imgUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+    </Upload>
   );
 };
 

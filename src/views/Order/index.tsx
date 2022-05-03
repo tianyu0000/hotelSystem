@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './style.module.scss';
-import { Button, Popconfirm, Table } from 'antd';
+import { Alert, Button, message, Popconfirm, Table } from 'antd';
 import { ServicesApi } from '@/services/request-api';
-import { orderInfo } from '@/services/entities'
+import { orderInfo, RoomInfo } from '@/services/entities'
 
 const cx = classNames.bind(styles);
 const { getOrderList, checkRoom } = ServicesApi;
@@ -13,20 +13,24 @@ const Order: React.FC = () => {
   const [disabled, setDisabled] = useState<boolean>(false);
 
   const handleCheck = (record: orderInfo) => {
-    checkRoom({ o_id: record.o_id }).then(() => {
-      getData(record);
+    checkRoom({ o_id: record.o_id }).then((res) => {
+      if (res.status === 1004) {
+        message.error(res.msg)
+      } else {
+        message.success(res.msg)
+      }
+      getData();
     });
   }
-  const getData = (data: orderInfo) => {
-    getOrderList().then((res: any) => {
-      res.map((item: any, index: number) => {
+  const getData = () => {
+    getOrderList().then((res: orderInfo[]) => {
+      res.map((item: orderInfo, index: number) => {
         Object.assign(
           item,
           { key: index }
         )
       })
-      setData(res);
-
+      setData(res.reverse());
     })
   }
   const switchState = (state: number) => {
@@ -43,7 +47,7 @@ const Order: React.FC = () => {
   }
   useEffect(() => {
     //订单列表
-    getData(data);
+    getData();
   }, [])
   const columns = [
     {
@@ -57,9 +61,19 @@ const Order: React.FC = () => {
       key: 'o_room_id',
     },
     {
-      title: '预订天数',
-      dataIndex: 'days',
-      key: 'days',
+      title: '用户名',
+      dataIndex: 'o_user_name',
+      key: 'o_user_name',
+    },
+    {
+      title: '起始日期',
+      dataIndex: 'o_roomDate_start',
+      key: 'o_roomDate_start',
+    },
+    {
+      title: '截止日期',
+      dataIndex: 'o_roomDate_end',
+      key: 'o_roomDate_end',
     },
     {
       title: '订单金额',

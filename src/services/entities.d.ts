@@ -6,6 +6,22 @@ export interface BaseResponse<T = any> {
   data: T;
 }
 
+export interface OrderResponse<T = any> {
+  status: number,
+  [data: T],
+  msg: string,
+}
+
+export interface CommentInfo {
+  _id: string,
+  photo?: string,
+  id: string,
+  name: string,
+  comment_date: string,
+  comment_content: string,
+  isHideName: string
+}
+
 export interface UserInfo {
   isAdmin: Number,
   name: string,
@@ -19,30 +35,33 @@ export interface UserInfo {
 export interface RoomInfo {
   _id: string,
   r_head: string,
-  r_imgs: Array,
+  r_imgs: string[],
   r_title: string,
   r_desc: string,
   r_bedrooms: Number,
   r_beds: Number,
   r_wc: Number,
   r_people: Number,
-  r_comment: Array,
-  r_date: Array,
+  r_comment: Array<any>,
+  r_date: any[],
   r_price: Number,
   r_tag: string,
   r_type: string
 }
 
 export interface orderInfo {
+  [x: string]: any;
   _id: string,
   o_id: string,
   o_room_id: string,
-  o_roomDate: Array<string>,
-  days: Number,
+  o_roomDate_start: string,
+  o_roomDate_end: stringm,
+  o_user_id: string,
   o_money: Number,
   o_userTel: string,
   o_createDate: string,
-  o_state: Number
+  o_state: Number,
+  o_user_name: string
 }
 
 export namespace UserApi {
@@ -69,7 +88,6 @@ export namespace UserApi {
 }
 
 export namespace RoomApi {
-  interface
   namespace getRoomInfo {
     type ResponseData = BaseResponse<RoomInfo>;
   }
@@ -100,20 +118,21 @@ export namespace RoomApi {
   }
   namespace commentId {
     interface id {
-      c_id: string
+      _id: string,
+      id: string
     }
-    type ResponseData = BaseResponse<RoomInfo>;
+    type ResponseData = BaseResponse;
   }
 }
 
 export namespace OrderApi {
   namespace getOrderInfo {
-    type ResponseData = BaseResponse<orderInfo>
+    type ResponseData = Array<orderInfo>
   }
   namespace orderId {
     interface id {
       o_id: string
     }
-    type ResponseData = BaseResponse<orderInfo>
+    type ResponseData = OrderResponse<orderInfo>
   }
 }
