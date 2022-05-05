@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Avatar, Dropdown, Layout, Menu } from "antd";
+import { Avatar, Dropdown, Layout, Menu, MenuProps } from "antd";
 import { Link, useHistory } from "react-router-dom";
 import {
   HomeOutlined,
@@ -13,6 +13,8 @@ import className from "classnames/bind";
 import styles from './styles.module.scss'
 import { Footer } from "antd/lib/layout/layout";
 import { deleteUserInfo } from "@/utils/storageUtils";
+import { MenuItemType, SubMenuType } from "rc-menu/lib/interface";
+import MenuItem from "antd/lib/menu/MenuItem";
 const cx = className.bind(styles);
 
 const { Header, Sider, Content } = Layout;
@@ -20,27 +22,44 @@ export interface BasicLayoutProps {
   example?: string;
 }
 
+
 const BasicLayout: React.FC<BasicLayoutProps> = ({ children }) => {
   const history = useHistory();
+  const getItem = (
+    label: React.ReactNode,
+    key: React.Key,
+    icon?: React.ReactNode,
+    children?: MenuItem[],
+    type?: 'group',
+  ): MenuItem => ({
+    key,
+    icon,
+    children,
+    label,
+    type,
+  } as MenuItem);
+
+
+  const items: MenuProps['items'] = [
+    {
+      label: (<div onClick={() => {
+        deleteUserInfo();
+        history.replace(routerPath.Login);
+      }}
+      >
+        退出登录
+      </div>),
+      type: 'group'
+    }
+  ];
 
   const showUserMenu = () => (
-    <Menu>
-      <Menu.Item key="1">
-        <div onClick={() => { }}>
-
-        </div>
-      </Menu.Item>
-      <Menu.Item key="2">
-        <div onClick={() => {
-          deleteUserInfo();
-          history.replace(routerPath.Login);
-        }}
-        >
-          退出登录
-        </div>
-      </Menu.Item>
+    <Menu items={items}>
     </Menu>
   );
+  const userMenuItems: MenuProps['items'] = [
+
+  ];
 
   return (
     <Layout className={cx('main')}>
@@ -83,3 +102,15 @@ const BasicLayout: React.FC<BasicLayoutProps> = ({ children }) => {
   );
 }
 export default BasicLayout;
+
+function icon(arg0: JSX.Element, key: any, Home: string, icon: any, arg4: JSX.Element, type: any, arg6: string): import("antd/lib/menu/hooks/useItems").ItemType {
+  throw new Error("Function not implemented.");
+}
+function key(arg0: JSX.Element, key: any, Home: string, icon: (arg0: JSX.Element, key: any, Home: string, icon: any, arg4: JSX.Element, type: any, arg6: string) => import("antd/lib/menu/hooks/useItems").ItemType, arg4: JSX.Element, type: any, arg6: string): import("antd/lib/menu/hooks/useItems").ItemType {
+  throw new Error("Function not implemented.");
+}
+
+function type(arg0: JSX.Element, key: any, Home: string, icon: (arg0: JSX.Element, key: any, Home: string, icon: any, arg4: JSX.Element, type: any, arg6: string) => import("antd/lib/menu/hooks/useItems").ItemType, arg4: JSX.Element, type: any, arg6: string): import("antd/lib/menu/hooks/useItems").ItemType {
+  throw new Error("Function not implemented.");
+}
+
