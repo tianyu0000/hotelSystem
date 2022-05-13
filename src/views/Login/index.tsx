@@ -22,10 +22,9 @@ const Login: React.FC = () => {
                 name: userName,
                 password: userPwd
             }).then((res) => {
-                saveUserInfo(res.data)
-                console.log(res);
                 switch (res.status) {
                     case 1000:
+                        saveUserInfo(res.data)
                         message.success(`登录成功!欢迎您,管理员${userName}`);
                         history.push(routerPath.Home);
                         break;
@@ -58,7 +57,7 @@ const Login: React.FC = () => {
             autoComplete="off"
         >
             <Form.Item
-                label="账户"
+                label="用户名"
                 name="username"
                 rules={[{ required: true, message: '请输入账户！' }]}
 

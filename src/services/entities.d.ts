@@ -34,8 +34,7 @@ export interface UserInfo {
 
 export interface RoomInfo {
   _id: string,
-  r_head: string,
-  r_imgs: string[],
+  r_photo: string,
   r_title: string,
   r_desc: string,
   r_bedrooms: Number,
@@ -55,9 +54,11 @@ export interface orderInfo {
   o_id: string,
   o_room_id: string,
   o_roomDate_start: string,
-  o_roomDate_end: stringm,
+  o_roomDate_end: string,
+  o_day:number,
+  o_total:number,
   o_user_id: string,
-  o_money: Number,
+  o_price: Number,
   o_userTel: string,
   o_createDate: string,
   o_state: Number,
@@ -94,8 +95,7 @@ export namespace RoomApi {
 
   namespace addRoom {
     interface form {
-      r_head: string,
-      r_imgs: Array,
+      r_photo: string,
       r_title: string,
       r_desc: string,
       r_bedrooms: Number,

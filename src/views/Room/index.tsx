@@ -69,7 +69,7 @@ const Room: React.FC = () => {
       key: '_id',
     },
     {
-      title: '房间名',
+      title: '房间标题',
       dataIndex: 'r_title',
       key: 'r_title',
     },
@@ -89,7 +89,7 @@ const Room: React.FC = () => {
       key: 'r_tag',
     },
     {
-      title: '描述',
+      title: '房间描述',
       dataIndex: 'r_desc',
       key: 'r_desc',
     },
@@ -106,7 +106,7 @@ const Room: React.FC = () => {
                   <div className={cx('comment-item')} >
                     <div className={cx('left')}>
                       <div className={cx('avatar')}>{item.isHideName === 'false' ? <Avatar shape="square" src={item.photo} style={{ 'height': '100%', 'width': '100%' }} /> : <Avatar shape="square" size={80} icon={<UserOutlined />} style={{ 'height': '100%', 'width': '100%' }} />}</div>
-                      <div className={cx('name')}>用户名:{item.name}</div>
+                      <div className={cx('name')}>{item.isHideName === 'false' ? `用户名:${item.name}` : `匿名用户`}</div>
                     </div>
                     <div className={cx('right')}>
                       <div className={cx('content')}>

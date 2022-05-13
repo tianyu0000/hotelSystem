@@ -56,9 +56,9 @@ const Order: React.FC = () => {
       key: '_id',
     },
     {
-      title: '房间ID',
-      dataIndex: 'o_room_id',
-      key: 'o_room_id',
+      title: '房间标题',
+      dataIndex: 'o_room_title',
+      key: 'o_room_title',
     },
     {
       title: '用户名',
@@ -76,9 +76,19 @@ const Order: React.FC = () => {
       key: 'o_roomDate_end',
     },
     {
+      title: '总天数',
+      dataIndex: 'o_day',
+      key: 'o_day',
+    },
+    {
+      title: '客房单价(元/天)',
+      dataIndex: 'o_price',
+      key: 'o_price',
+    },
+    {
       title: '订单金额',
-      dataIndex: 'o_money',
-      key: 'o_money',
+      dataIndex: 'o_total',
+      key: 'o_total',
     },
     {
       title: '用户手机号码',

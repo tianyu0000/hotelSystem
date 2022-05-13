@@ -43,8 +43,7 @@ const AddRoomButton: React.FC<childProps> = (props) => {
     console.log(form.getFieldsValue());
     console.log(imgUrl);
     addRoom({
-      r_head: imgUrl,
-      r_imgs: imgUrl,
+      r_photo: imgUrl,
       r_title: form.getFieldValue("title"),
       r_desc: form.getFieldValue("describe"),
       r_bedrooms: form.getFieldValue("bedroom"),
@@ -113,7 +112,7 @@ const AddRoomButton: React.FC<childProps> = (props) => {
           <Input />
         </Form.Item>
         <Form.Item label="房间描述" name="describe">
-          <TextArea rows={5} />
+          <TextArea rows={5}  maxLength={50}/>
         </Form.Item>
         <Form.Item label="房间预览图">
           <UploadRoomImage handleRes={handleRes} />

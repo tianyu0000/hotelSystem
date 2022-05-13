@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Avatar, Dropdown, Layout, Menu, MenuProps } from "antd";
+import { Avatar, Dropdown, Layout, Menu } from "antd";
+import type { MenuProps } from "antd";
 import { Link, useHistory } from "react-router-dom";
 import {
   HomeOutlined,
@@ -12,9 +13,9 @@ import routerPath from "@/router/router-path";
 import className from "classnames/bind";
 import styles from './styles.module.scss'
 import { Footer } from "antd/lib/layout/layout";
-import { deleteUserInfo } from "@/utils/storageUtils";
+import { deleteUserInfo, getUserInfo } from "@/utils/storageUtils";
 import { MenuItemType, SubMenuType } from "rc-menu/lib/interface";
-import MenuItem from "antd/lib/menu/MenuItem";
+import { UserInfo } from "@/services/entities";
 const cx = className.bind(styles);
 
 const { Header, Sider, Content } = Layout;
@@ -22,72 +23,57 @@ export interface BasicLayoutProps {
   example?: string;
 }
 
-
 const BasicLayout: React.FC<BasicLayoutProps> = ({ children }) => {
   const history = useHistory();
-  const getItem = (
+  const [managerInfo,setMannagerInfo] = useState<UserInfo>();
+
+  type MenuItem = Required<MenuProps>['items'][number];
+
+  const getItem=(
     label: React.ReactNode,
     key: React.Key,
     icon?: React.ReactNode,
     children?: MenuItem[],
     type?: 'group',
-  ): MenuItem => ({
-    key,
-    icon,
-    children,
-    label,
-    type,
-  } as MenuItem);
-
-
+  ): MenuItem =>( {
+      key,
+      icon,
+      children,
+      label,
+      type,
+  }as MenuItem);
+  
+  const items_sider:MenuProps['items'] = [
+    getItem('首页',routerPath.Home,<HomeOutlined />),
+    getItem('房间管理',routerPath.Rooms,<BankOutlined />),
+    getItem('订单管理',routerPath.Orders,<AccountBookOutlined />),
+    getItem('用户管理',routerPath.Users,<UserOutlined />)
+  ]
   const items: MenuProps['items'] = [
-    {
-      label: (<div onClick={() => {
-        deleteUserInfo();
-        history.replace(routerPath.Login);
-      }}
-      >
-        退出登录
-      </div>),
-      type: 'group'
-    }
+    getItem('退出登录',routerPath.Login)
   ];
-
+  
   const showUserMenu = () => (
-    <Menu items={items}>
+    <Menu items={items} onClick={(item)=>{deleteUserInfo();history.replace(item.key)}}>
     </Menu>
   );
-  const userMenuItems: MenuProps['items'] = [
 
-  ];
-
+  useEffect(()=>{
+    const managerInfo = getUserInfo();
+    setMannagerInfo(managerInfo[0]);
+  },[])
   return (
     <Layout className={cx('main')}>
       <Sider
-
         className={cx('aside')}
       >
-        <div className="logo" />
-        <Menu theme="light" mode="inline" defaultSelectedKeys={[history.location.pathname]}>
-          <Menu.Item key={routerPath.Home} icon={<HomeOutlined />}>
-            <Link to={routerPath.Home}>首页</Link>
-          </Menu.Item>
-          <Menu.Item key={routerPath.Rooms} icon={<BankOutlined />}>
-            <Link to={routerPath.Rooms}>房间管理</Link>
-          </Menu.Item>
-          <Menu.Item key="2" icon={<AccountBookOutlined />}>
-            <Link to={routerPath.Orders}>订单核销</Link>
-          </Menu.Item>
-          <Menu.Item key={routerPath.Users} icon={<UserOutlined />}>
-            <Link to={routerPath.Users}>用户管理</Link>
-          </Menu.Item>
-        </Menu>
+        <Menu items={items_sider} theme="light" mode="inline" defaultSelectedKeys={[history.location.pathname]} onClick={(item)=>{history.replace(item.key)}}></Menu>
       </Sider>
       <Layout className={cx('site-layout')}>
         <Header className={cx("site-layout-sub-header-background", "header")} style={{ padding: 0 }} >
           <div className={cx('avatar')}>
             <Dropdown overlay={showUserMenu} placement="bottom" arrow>
-              <Avatar size="large" icon={<UserOutlined />} className={cx("avatar-img")} />
+              <Avatar src={managerInfo?.photo} size="large" icon={<UserOutlined />} className={cx("avatar-img")} />
             </Dropdown>
           </div>
         </Header>
@@ -102,15 +88,3 @@ const BasicLayout: React.FC<BasicLayoutProps> = ({ children }) => {
   );
 }
 export default BasicLayout;
-
-function icon(arg0: JSX.Element, key: any, Home: string, icon: any, arg4: JSX.Element, type: any, arg6: string): import("antd/lib/menu/hooks/useItems").ItemType {
-  throw new Error("Function not implemented.");
-}
-function key(arg0: JSX.Element, key: any, Home: string, icon: (arg0: JSX.Element, key: any, Home: string, icon: any, arg4: JSX.Element, type: any, arg6: string) => import("antd/lib/menu/hooks/useItems").ItemType, arg4: JSX.Element, type: any, arg6: string): import("antd/lib/menu/hooks/useItems").ItemType {
-  throw new Error("Function not implemented.");
-}
-
-function type(arg0: JSX.Element, key: any, Home: string, icon: (arg0: JSX.Element, key: any, Home: string, icon: any, arg4: JSX.Element, type: any, arg6: string) => import("antd/lib/menu/hooks/useItems").ItemType, arg4: JSX.Element, type: any, arg6: string): import("antd/lib/menu/hooks/useItems").ItemType {
-  throw new Error("Function not implemented.");
-}
-
