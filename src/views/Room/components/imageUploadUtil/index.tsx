@@ -7,13 +7,14 @@ import { PlusOutlined } from '@ant-design/icons';
 
 interface childProps {
   handleRes: Function;
+  initUrl?: string;
+  isEdit?: boolean;
 }
 
 const fileTypeCases = ['image/png', 'image/jpeg', 'image/jpg'];
-const UploadRoomImage: React.FC<childProps> = (props) => {
+const UploadRoomImage: React.FC<childProps> = ({initUrl, handleRes, isEdit}) => {
 
   const [imgUrl, setImgUrl] = useState<string>();
-  const { handleRes } = props;
   const uploadButton = (
     <div>
       <PlusOutlined />
@@ -47,10 +48,15 @@ const UploadRoomImage: React.FC<childProps> = (props) => {
       if (res) {
         urlRef.current = res.url;
         setImgUrl(urlRef.current);
-        props.handleRes(urlRef.current);
+        handleRes(urlRef.current);
       }
     });
   }
+  useEffect(()=>{
+    
+      setImgUrl(initUrl);
+    
+  }, [])
   return (
     <Upload
       beforeUpload={checkFile}

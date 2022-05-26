@@ -48,6 +48,19 @@ export interface RoomInfo {
   r_type: string
 }
 
+export interface updateRoom {
+  r_photo: string,
+    r_title: string,
+    r_desc: string,
+    r_bedrooms: Number,
+    r_beds: Number,
+    r_wc: Number,
+    r_people: Number,
+    r_price: Number,
+    r_tag: string,
+    r_type: string
+}
+
 export interface orderInfo {
   [x: string]: any;
   _id: string,

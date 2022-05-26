@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 import styles from './style.module.scss';
 import { Avatar, Button, Divider, Empty, Modal, Popconfirm, Table, } from 'antd';
 import { ServicesApi } from '@/services/request-api';
-import AddRoomButton from './components/addRoomUtil';
+import AddOrUpdateRoom from './components/addOrUpdateRoomUtil';
 import { CommentInfo, RoomInfo } from '@/services/entities';
 import { UserOutlined } from '@ant-design/icons';
 
@@ -12,10 +12,13 @@ const cx = classNames.bind(styles);
 const Room: React.FC = () => {
 
   const { getRoomList, deleteRoom, deleteComment, getRoomDetail } = ServicesApi;
-  const [data, setData] = useState<any>();
+  const [data, setData] = useState<RoomInfo[]>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [roomComments, setRoomComments] = useState<CommentInfo[]>([]);
   const [roomKey, setRoomKey] = useState<RoomInfo>();
+  const [isShow, setIsShow] = useState<boolean>(false);
+  const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [editData, setEditData] = useState<RoomInfo>();
   const handleComment = (record: RoomInfo) => {
     setRoomComments(record.r_comment.reverse());
     setRoomKey(record);
@@ -55,9 +58,24 @@ const Room: React.FC = () => {
         setRoomComments(res.data.r_comment)
       })
     })
+  }
+  const createRoom = () => {
+    setIsEdit(false);
+    setIsShow(true);
+  }
+  const editRoom = (item:RoomInfo) => {
+    getRoomDetail({
+      _id: item._id
+    }).then(res => {
+      setEditData(res.data);
+    })
+    setIsEdit(true);
+    setIsShow(true);
+  }
+  const closeDrawer = () => {
+    setIsShow(false);
 
   }
-
   useEffect(() => {
     //房间列表
     getData();
@@ -97,7 +115,7 @@ const Room: React.FC = () => {
       title: '操作',
       key: 'action',
       render: (record: RoomInfo) => (<div className={cx("operation")}>
-        <Button type="primary" size='small' onClick={() => handleComment(record)} >查看评论</Button>
+        {/* 房间评论 */}
         <Modal footer={null} mask={false} forceRender={true} title="该房间评论" visible={isModalVisible} onOk={() => { setIsModalVisible(false) }} onCancel={() => { setIsModalVisible(false) }}>
           <div className={cx('comment-modal')}>
             {roomComments.length === 0 ? <Empty /> :
@@ -126,6 +144,17 @@ const Room: React.FC = () => {
                 </div>)
               })}</div>
         </Modal>
+        {/* 房间评论 */}
+        <Button type="primary" size='small' onClick={() => handleComment(record)} >查看评论</Button>
+        <Button type='primary' size='small' onClick={()=> {
+          getRoomDetail({
+            _id: record._id
+          }).then(res => {
+            setEditData(res.data);
+          })
+          setIsEdit(true);
+          setIsShow(true);
+        }}>修改信息</Button >
         <Popconfirm title="确认删除?" onConfirm={() => handleDelete(record)}>
           <Button danger size='small' >删除</Button >
         </Popconfirm>
@@ -137,7 +166,8 @@ const Room: React.FC = () => {
 
   return <div>
     <div className={cx("addRoom")}>
-      <AddRoomButton handleRefresh={handleRefresh} />
+    <Button type='primary' onClick={()=> createRoom()}>新增房间</Button >
+    <AddOrUpdateRoom handleRefresh={handleRefresh} isShow={isShow} isEdit={isEdit} closeEvent={closeDrawer} initData={editData!} />
     </div>
     <Table columns={columns} dataSource={data} />
 

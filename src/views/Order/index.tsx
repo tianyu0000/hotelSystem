@@ -51,7 +51,7 @@ const Order: React.FC = () => {
   }, [])
   const columns = [
     {
-      title: '订单ID',
+      title: '订单uuid',
       dataIndex: '_id',
       key: '_id',
     },
